@@ -1,6 +1,6 @@
 <header>
 	<div class="left-container">
-		<h1>Dating App</h1>
+		<a class="header-link" routerLink="/">Dating App</a>
 		<app-nav *ngIf="accountService.currentUser$ | async" (logout)="logout()"></app-nav>
 	</div>
 

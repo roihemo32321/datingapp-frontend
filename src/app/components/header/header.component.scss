@@ -11,7 +11,9 @@ header {
     display: flex;
     align-items: center;
     gap: 4rem;
-    h1 {
+    .header-link {
+      font-size: 2rem;
+      text-decoration: none;
       color: white;
     }
   }

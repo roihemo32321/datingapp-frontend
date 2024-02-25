@@ -8,7 +8,7 @@ import { User } from './models/user';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  title = 'dating-frontend';
+  error: string = '';
 
   constructor(private accountService: AccountService) {}
 
@@ -22,5 +22,9 @@ export class AppComponent implements OnInit {
       const user: User = JSON.parse(userString);
       this.accountService.setCurrentUser(user);
     }
+  }
+
+  setError(event: string) {
+    this.error = event;
   }
 }
