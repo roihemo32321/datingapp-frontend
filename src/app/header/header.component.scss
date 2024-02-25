@@ -1,0 +1,76 @@
+$defaultPadding: 2rem 4rem 2rem 4rem;
+$clampForm: clamp(0.75rem, 0.5vw + 0.5rem, 1.5rem);
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $defaultPadding;
+  background-color: grey;
+  .left-container {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    h1 {
+      color: white;
+    }
+  }
+
+  form {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    input {
+      font-size: $clampForm;
+      padding: 0.75rem;
+    }
+    button {
+      font-size: $clampForm;
+      padding: 0.75rem 1.5rem;
+      cursor: pointer;
+    }
+  }
+
+  .dropdown {
+    position: relative;
+    p {
+      font-size: 1.25rem;
+      color: white;
+      cursor: pointer;
+    }
+    .dropdown-content {
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+      position: absolute;
+      right: 5%;
+      background-color: #f9f9f9;
+      box-shadow: 0px 0.5rem 1rem 0px rgba(0, 0, 0, 0.2);
+      padding: 1rem;
+      z-index: 1;
+      button {
+        padding: 0.75rem 2rem;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: flex;
+  }
+}
+
+@media (width < 1400px) {
+  header {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@media (width < 650px) {
+  header {
+    padding: 2rem 0rem 2rem 0rem;
+  }
+}

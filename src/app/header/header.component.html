@@ -1,0 +1,22 @@
+<header>
+	<div class="left-container">
+		<h1>Dating App</h1>
+		<app-nav *ngIf="accountService.currentUser$ | async" (logout)="logout()"></app-nav>
+	</div>
+
+	<form #loginForm="ngForm" (ngSubmit)="login()" autocomplete="off" *ngIf="!(accountService.currentUser$ | async)">
+		<input name="username" [(ngModel)]="model.username" type="text" placeholder="Username" />
+		<input name="password" [(ngModel)]="model.password" type="password" placeholder="Password" />
+		<button type="submit">Login</button>
+	</form>
+
+	<div class="dropdown" *ngIf="accountService.currentUser$ | async">
+		<p>Welcome: user ^</p>
+		<div class="dropdown-content">
+			<button>Edit</button>
+			<button (click)="logout()">Logout</button>
+
+		</div>
+	</div>
+
+</header>

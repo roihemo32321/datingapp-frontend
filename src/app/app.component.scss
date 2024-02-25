@@ -1,0 +1,8 @@
+$defaultPadding: 2rem 4rem 2rem 4rem;
+
+main {
+  padding: $defaultPadding;
+  p {
+    width: fit-content;
+  }
+}
