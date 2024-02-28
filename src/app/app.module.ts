@@ -13,9 +13,10 @@ import { MemberDetailComponent } from './components/members/member-detail/member
 import { ListsComponent } from './components/lists/lists.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { TestErrorComponent } from './components/errors/test-error/test-error.component';
-import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { ErrorInterceptor } from './_interceptors/error.interceptor';
 import { NotFoundComponent } from './components/errors/not-found/not-found.component';
 import { ServerErrorComponent } from './components/errors/server-error/server-error.component';
+import { MemberCardComponent } from './components/members/member-card/member-card.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ServerErrorComponent } from './components/errors/server-error/server-er
     TestErrorComponent,
     NotFoundComponent,
     ServerErrorComponent,
+    MemberCardComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
   providers: [
