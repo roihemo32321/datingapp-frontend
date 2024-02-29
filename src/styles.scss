@@ -18,8 +18,14 @@
 }
 
 body,
-app-root {
+html {
   display: block;
+  min-height: 100vh;
+}
+
+app-root {
+  display: grid;
+  grid-template-rows: auto 1fr;
   min-height: 100vh;
 }
 

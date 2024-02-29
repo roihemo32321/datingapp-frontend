@@ -1,1 +1,10 @@
-<div class="member-card-container"></div>
+<a class="member-card-container" *ngIf="member" routerLink="/members/{{member.userName}}">
+	<div class="img-wrapper">
+		<img src={{member.photoUrl}} alt={{member.knownAs}} />
+	</div>
+
+	<div class="card-body">
+		<h5>{{member.knownAs}}</h5>
+		<p>{{member.city}}</p>
+	</div>
+</a>

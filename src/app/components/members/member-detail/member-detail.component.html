@@ -1,1 +1,42 @@
-<p>member-detail works!</p>
+<div class="member-details-container" *ngIf="member">
+	<h3>Hi There, Here you can get information about {{member.knownAs}}:</h3>
+	<div class="details-container">
+		<div class="img-container">
+			<img src={{member.photoUrl}} alt={{member.knownAs}} />
+		</div>
+		<div class="info-container">
+			<div class="single-info">
+				<h4>Description:</h4>
+				<p>{{member.introduction}}</p>
+			</div>
+			<div class="single-info">
+				<h4>Looking For:</h4>
+				<p>{{member.lookingFor}}</p>
+			</div>
+			<div class="single-info">
+				<h4>Age:</h4>
+				<p>{{member.age}}</p>
+			</div>
+			<div class="single-info">
+				<h4>Country:</h4>
+				<p>{{member.country}}</p>
+			</div>
+			<div class="single-info">
+				<h4>City:</h4>
+				<p>{{member.city}}</p>
+			</div>
+			<div class="single-info">
+				<h4>Member Since:</h4>
+				<p>{{member.created}}</p>
+			</div>
+			<div class="single-info">
+				<h4>Last Active:</h4>
+				<p>{{member.lastActive}}</p>
+			</div>
+			<div class="single-info">
+				<h4>Gender:</h4>
+				<p>{{member.gender}}</p>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,3 +1,3 @@
 <div class="members-list">
-	<div class="member-name" *ngFor="let member of members">{{member.knownAs}}</div>
+	<app-member-card *ngFor="let member of members" [member]="member"></app-member-card>
 </div>
