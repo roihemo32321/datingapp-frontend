@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class AccountService {
   baseUrl = environment.apiUrl;
-  private currentUserSource = new BehaviorSubject<User | null>(null); // A behavior subject that we can subscribe to.
+  private currentUserSource = new BehaviorSubject<User | null>(null); // A behavior subject that we can subscribe to our changes.
   currentUser$ = this.currentUserSource.asObservable(); // Observable for the current user.
 
   constructor(private http: HttpClient) {}

@@ -13,7 +13,7 @@
 	<div class="dropdown" *ngIf="accountService.currentUser$ | async">
 		<p>Welcome: user ^</p>
 		<div class="dropdown-content">
-			<button>Edit</button>
+			<button routerLink="/member/edit">Edit</button>
 			<button (click)="logout()">Logout</button>
 
 		</div>

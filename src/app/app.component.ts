@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AccountService } from './services/account.service';
 import { User } from './models/user';
+import { LoadingService } from './services/loading.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-  error: string = '';
-
-  constructor(private accountService: AccountService) {}
+  constructor(
+    private accountService: AccountService,
+    public loadingService: LoadingService
+  ) {}
 
   ngOnInit(): void {
     this.setCurrentUser();
@@ -22,9 +25,5 @@ export class AppComponent implements OnInit {
       const user: User = JSON.parse(userString);
       this.accountService.setCurrentUser(user);
     }
-  }
-
-  setError(event: string) {
-    this.error = event;
   }
 }
