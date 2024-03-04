@@ -22,6 +22,7 @@ import { MemberEditComponent } from './components/members/member-edit/member-edi
 import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { LoadingComponent } from './components/loading/loading.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FileUploadComponent } from './components/shared/file-upload/file-upload.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MemberCardComponent,
     MemberEditComponent,
     LoadingComponent,
+    FileUploadComponent,
   ],
   imports: [
     BrowserModule,

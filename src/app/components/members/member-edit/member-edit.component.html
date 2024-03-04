@@ -27,6 +27,8 @@
 				<input type="text" [(ngModel)]="member.country" name="country" />
 			</div>
 		</div>
+
+		<app-file-upload></app-file-upload>
 	</div>
 	<div class="btns-container">
 		<button type="submit" [disabled]="!editForm.dirty">Save</button>
