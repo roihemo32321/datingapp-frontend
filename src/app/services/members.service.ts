@@ -14,12 +14,14 @@ export class MembersService {
   constructor(private http: HttpClient) {}
 
   getMembers() {
-    if (this.members.length > 0) return of(this.members); // If we have members we return of(observable) of the members.
+    if (this.members.length > 0) {
+      return of(this.members); // If we have members we return of(observable) of the members.
+    }
 
-    return this.http.get<Member[]>(this.baseUrl + 'users').pipe(
+    return this.http.get<Member[]>(`${this.baseUrl}users`).pipe(
       map((members) => {
         this.members = members;
-        return members;
+        return members; // We need to return members in the pipe map function to use it in the subscribe.
       })
     );
   }

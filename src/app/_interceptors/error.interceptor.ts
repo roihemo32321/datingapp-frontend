@@ -29,6 +29,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                     modelStateErrors.push(error.error.errors[key]);
                   }
                 }
+                console.log(modelStateErrors.flat());
 
                 throw modelStateErrors.flat();
               } else {
@@ -49,6 +50,8 @@ export class ErrorInterceptor implements HttpInterceptor {
               const navigationExtras: NavigationExtras = {
                 state: { error: error.error },
               };
+              console.log(navigationExtras);
+
               this.router.navigateByUrl('/server-error', navigationExtras);
               break;
 
@@ -57,6 +60,8 @@ export class ErrorInterceptor implements HttpInterceptor {
               break;
           }
         }
+
+        console.log(error);
 
         throw error;
       })
