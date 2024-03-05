@@ -3,8 +3,9 @@ import { Member } from '../../../models/member';
 import { User } from '../../../models/user';
 import { MembersService } from '../../../services/members.service';
 import { AccountService } from '../../../services/account.service';
-import { take } from 'rxjs';
+import { map, take } from 'rxjs';
 import { NgForm } from '@angular/forms';
+import { FileUploadService } from '../../../services/file-upload.service';
 
 @Component({
   selector: 'app-member-edit',
@@ -20,14 +21,15 @@ export class MemberEditComponent implements OnInit {
       $event.returnValue = true;
     }
   }
-
+  file: File | undefined;
   @ViewChild('editForm') editForm: NgForm | undefined;
   member: Member | undefined;
   user: User | null = null;
 
   constructor(
     private accountService: AccountService,
-    private memberService: MembersService
+    private memberService: MembersService,
+    private uploadFileService: FileUploadService
   ) {
     this.accountService.currentUser$
       .pipe(take(1))
@@ -35,8 +37,6 @@ export class MemberEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.user?.username);
-
     this.loadMember();
   }
 
@@ -48,6 +48,19 @@ export class MemberEditComponent implements OnInit {
   }
 
   updateMember() {
+    const fileUpload$ = this.uploadFileService.uploadFileDb();
+    if (fileUpload$) {
+      fileUpload$.subscribe({
+        next: (photo) => {
+          if (this.member?.photos.length === 0) {
+            this.member.photoUrl = photo.url;
+          }
+
+          this.member?.photos.push(photo);
+        },
+      });
+    }
+
     this.memberService.updateMember(this.editForm?.value).subscribe({
       next: () => this.editForm?.reset(this.member),
     });

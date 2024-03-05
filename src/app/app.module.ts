@@ -23,6 +23,7 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { LoadingComponent } from './components/loading/loading.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FileUploadComponent } from './components/shared/file-upload/file-upload.component';
+import { EditPhotosComponent } from './components/members/edit-photos/edit-photos.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { FileUploadComponent } from './components/shared/file-upload/file-upload
     MemberEditComponent,
     LoadingComponent,
     FileUploadComponent,
+    EditPhotosComponent,
   ],
   imports: [
     BrowserModule,

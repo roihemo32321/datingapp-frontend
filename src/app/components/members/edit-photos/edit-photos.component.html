@@ -1,0 +1,9 @@
+<div class="user-imgs-container" *ngIf="member">
+	<div class="user-img-control" *ngFor="let photo of member.photos">
+		<img src="{{photo.url}}" alt="photo of user" class="img-style">
+		<div class="btns-container">
+			<button (click)="setMainPhoto(photo)" [disabled]="photo.isMain">Main</button>
+			<button (click)="deletePhoto(photo.id)" [disabled]="photo.isMain">Delete</button>
+		</div>
+	</div>
+</div>

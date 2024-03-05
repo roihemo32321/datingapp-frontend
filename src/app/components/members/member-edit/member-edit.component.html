@@ -1,4 +1,4 @@
-<form *ngIf="member" #editForm="ngForm" (ngSubmit)="updateMember()">
+<form *ngIf="member" #editForm="ngForm" id="editForm" (ngSubmit)="updateMember()">
 	<h1>Edit profile of the user: {{member.knownAs}}</h1>
 	<div class="alert" *ngIf="editForm.dirty">
 		<p>Information: You have made changes. Any unsaved changes will be lost.</p>
@@ -27,11 +27,11 @@
 				<input type="text" [(ngModel)]="member.country" name="country" />
 			</div>
 		</div>
-
-		<app-file-upload></app-file-upload>
+		<app-file-upload [member]="member"></app-file-upload>
+		<app-edit-photos [member]="member"></app-edit-photos>
 	</div>
-	<div class="btns-container">
+	<div class=" btns-container">
 		<button type="submit" [disabled]="!editForm.dirty">Save</button>
-		<button>Cancel</button>
+		<button routerLink="/members">Cancel</button>
 	</div>
 </form>
