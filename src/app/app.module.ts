@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NavComponent } from './components/nav/nav.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -24,6 +24,7 @@ import { LoadingComponent } from './components/loading/loading.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FileUploadComponent } from './components/shared/file-upload/file-upload.component';
 import { EditPhotosComponent } from './components/members/edit-photos/edit-photos.component';
+import { TextInputComponent } from './components/shared/text-input/text-input.component';
 
 @NgModule({
   declarations: [
@@ -44,12 +45,14 @@ import { EditPhotosComponent } from './components/members/edit-photos/edit-photo
     LoadingComponent,
     FileUploadComponent,
     EditPhotosComponent,
+    TextInputComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     FontAwesomeModule,
   ],
   providers: [

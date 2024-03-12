@@ -1,0 +1,19 @@
+<div class="input-container">
+	<input [formControl]="control" type={{type}} placeholder={{label}} [ngClass]="{'is-invalid': control.touched && control.invalid}" />
+
+	<div class="invalid-text" *ngIf="control.errors?.['required'] && control?.touched">
+		Please enter a {{label}}.
+	</div>
+
+	<div class="invalid-text" *ngIf="control.errors?.['minlength'] && control?.touched">
+		{{label}} must be at least {{control.errors?.['minlength'].requiredLength}} characters.
+	</div>
+
+	<div class="invalid-text" *ngIf="control.errors?.['maxlength'] && control?.touched">
+		{{label}} must be at most {{control.errors?.['maxlength'].requiredLength}} characters.
+	</div>
+
+	<div class="invalid-text" *ngIf="control.errors?.['notMatching'] && control?.touched">
+		Passwords do not match.
+	</div>
+</div>

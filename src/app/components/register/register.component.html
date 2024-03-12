@@ -1,11 +1,28 @@
-<form #registerForm="ngForm" (ngSubmit)="register()" autocomplete="off">
+<form [formGroup]="registerForm" (ngSubmit)="registerForm.valid && register()" autocomplete="off">
 	<div class="inputs-container">
-		<input name="username" type="text" placeholder="username" [(ngModel)]="model.username" />
-		<input name="password" type="password" placeholder="password" [(ngModel)]="model.password" />
+		<div class="gender-radio-container">
+			<label>Iam a: </label>
+			<label class="gender-label">
+				<input type="radio" value="male" formControlName="gender">
+				<span>Male</span>
+			</label>
+			<label class="gender-label">
+				<input type="radio" value="female" formControlName="gender">
+				<span>Female</span>
+			</label>
+		</div>
+
+		<app-text-input [formControl]="$any(registerForm.controls['username'])" [label]="'Username'"></app-text-input>
+		<app-text-input [formControl]="$any(registerForm.controls['knownAs'])" [label]="'Known As'"></app-text-input>
+		<app-text-input [formControl]="$any(registerForm.controls['dateOfBirth'])" [label]="'Date of Birth'" [type]="'date'"></app-text-input>
+		<app-text-input [formControl]="$any(registerForm.controls['city'])" [label]="'City'"></app-text-input>
+		<app-text-input [formControl]="$any(registerForm.controls['country'])" [label]="'Country'"></app-text-input>
+		<app-text-input [formControl]="$any(registerForm.controls['password'])" [label]="'Password'" [type]="'password'"></app-text-input>
+		<app-text-input [formControl]="$any(registerForm.controls['confirmPassword'])" [label]="'Confirm password'" [type]="'password'"></app-text-input>
 	</div>
 
 	<div class="btns-container">
-		<button type="submit">Register</button>
+		<button type="submit" [disabled]="!registerForm.valid">Register</button>
 		<button type="button" (click)="cancel()">Cancel</button>
 	</div>
 
