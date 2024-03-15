@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Member } from '../../../models/member';
 import { MembersService } from '../../../services/members.service';
 import { Pagination } from '../../../models/pagination';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-member-list',
@@ -29,5 +30,12 @@ export class MemberListComponent implements OnInit {
         }
       },
     });
+  }
+
+  changePage($event: PageEvent) {
+    if (this.pageNumber !== $event.pageIndex) {
+      this.pageNumber = $event.pageIndex;
+      this.loadMembers();
+    }
   }
 }

@@ -25,6 +25,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FileUploadComponent } from './components/shared/file-upload/file-upload.component';
 import { EditPhotosComponent } from './components/members/edit-photos/edit-photos.component';
 import { TextInputComponent } from './components/shared/text-input/text-input.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -54,11 +56,13 @@ import { TextInputComponent } from './components/shared/text-input/text-input.co
     FormsModule,
     ReactiveFormsModule,
     FontAwesomeModule,
+    MatPaginatorModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
+    provideAnimationsAsync(),
   ],
   bootstrap: [AppComponent],
 })

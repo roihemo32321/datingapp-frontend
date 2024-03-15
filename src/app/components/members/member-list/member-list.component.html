@@ -1,3 +1,4 @@
 <div class="members-list">
 	<app-member-card *ngFor="let member of members" [member]="member"></app-member-card>
+	<mat-paginator *ngIf="pagination" [pageSize]="pagination.itemsPerPage" [length]="pagination.totalItems" (page)="changePage($event)"></mat-paginator>
 </div>
