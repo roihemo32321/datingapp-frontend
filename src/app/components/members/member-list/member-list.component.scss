@@ -1,6 +1,12 @@
-.members-list {
+.member-list-container {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 2rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  .members-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
 }

@@ -14,14 +14,14 @@ export class LoadingInterceptor implements HttpInterceptor {
   constructor(private loadingService: LoadingService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler) {
-    this.loadingService.setLoading(true);
+    setTimeout(() => this.loadingService.setLoading(true));
     this.totalRequests++;
 
     return next.handle(request).pipe(
       finalize(() => {
         this.totalRequests--;
         if (this.totalRequests <= 0) {
-          this.loadingService.setLoading(false);
+          setTimeout(() => this.loadingService.setLoading(false));
         }
       })
     );

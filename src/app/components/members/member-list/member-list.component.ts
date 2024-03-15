@@ -12,30 +12,28 @@ import { PageEvent } from '@angular/material/paginator';
 export class MemberListComponent implements OnInit {
   members: Member[] | undefined;
   pagination: Pagination | undefined;
-  pageNumber = 0;
-  pageSize = 5;
+  pageNumber = 1;
+  pageSize = 4;
 
-  constructor(public memberService: MembersService) {}
+  constructor(private memberService: MembersService) {}
 
   ngOnInit(): void {
     this.loadMembers();
   }
 
   loadMembers() {
+    // Load members for current page
     this.memberService.getMembers(this.pageNumber, this.pageSize).subscribe({
       next: (res) => {
-        if (res.result && res.pagination) {
-          this.members = res.result;
-          this.pagination = res.pagination;
-        }
+        this.members = res?.result;
+        this.pagination = res?.pagination;
       },
     });
   }
 
   changePage($event: PageEvent) {
-    if (this.pageNumber !== $event.pageIndex) {
-      this.pageNumber = $event.pageIndex;
-      this.loadMembers();
-    }
+    this.pageNumber = $event.pageIndex + 1;
+    this.pageSize = $event.pageSize;
+    this.loadMembers();
   }
 }

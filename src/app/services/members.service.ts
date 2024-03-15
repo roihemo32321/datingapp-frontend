@@ -11,34 +11,45 @@ import { PaginationResult } from '../models/pagination';
 export class MembersService {
   baseUrl = environment.apiUrl;
   members: Member[] = []; // Saving members in our service will improve our angular app because of services stays alive every time!
-  paginatedResult: PaginationResult<Member[]> = new PaginationResult<
-    Member[]
-  >();
+
+  // Add a map to cache page data
+  private memberCache = new Map<string, PaginationResult<Member[]>>();
 
   constructor(private http: HttpClient) {}
 
   getMembers(page?: number, itemsPerPage?: number) {
-    let params = new HttpParams(); // Getting the HttpParams to set the queryParams.
+    // Generate a cache key based on page and size
+    const cacheKey = `${page}-${itemsPerPage}`;
 
-    if (typeof page === 'number' && page >= 0 && itemsPerPage) {
-      params = params.append('pageNumber', page);
-      params = params.append('pageSize', itemsPerPage);
+    // Check if data is already cached
+    if (this.memberCache.has(cacheKey)) {
+      return of(this.memberCache.get(cacheKey));
     }
 
+    let params = new HttpParams()
+      .set('pageNumber', page!.toString())
+      .set('pageSize', itemsPerPage!.toString());
+
+    // If not cached, fetch data from server
     return this.http
       .get<Member[]>(`${this.baseUrl}users`, { observe: 'response', params })
       .pipe(
-        map((response) => {
-          if (response.body) {
-            this.paginatedResult.result = response.body;
+        map((res) => {
+          const paginatedResult = new PaginationResult<Member[]>();
+
+          // Save response to cache
+          if (res.body) {
+            paginatedResult.result = res.body;
           }
 
-          const pagination = response.headers.get('Pagination');
+          const pagination = res.headers.get('Pagination');
+
           if (pagination) {
-            this.paginatedResult.pagination = JSON.parse(pagination);
+            paginatedResult.pagination = JSON.parse(pagination);
           }
 
-          return this.paginatedResult;
+          this.memberCache.set(cacheKey, paginatedResult);
+          return paginatedResult;
         })
       );
   }
