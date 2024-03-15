@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Member } from '../models/member';
 import { map, of } from 'rxjs';
+import { PaginationResult } from '../models/pagination';
 
 @Injectable({
   providedIn: 'root',
@@ -10,20 +11,36 @@ import { map, of } from 'rxjs';
 export class MembersService {
   baseUrl = environment.apiUrl;
   members: Member[] = []; // Saving members in our service will improve our angular app because of services stays alive every time!
+  paginatedResult: PaginationResult<Member[]> = new PaginationResult<
+    Member[]
+  >();
 
   constructor(private http: HttpClient) {}
 
-  getMembers() {
-    if (this.members.length > 0) {
-      return of(this.members); // If we have members we return of(observable) of the members.
+  getMembers(page?: number, itemsPerPage?: number) {
+    let params = new HttpParams(); // Getting the HttpParams to set the queryParams.
+
+    if (typeof page === 'number' && page >= 0 && itemsPerPage) {
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemsPerPage);
     }
 
-    return this.http.get<Member[]>(`${this.baseUrl}users`).pipe(
-      map((members) => {
-        this.members = members;
-        return members; // We need to return members in the pipe map function to use it in the subscribe.
-      })
-    );
+    return this.http
+      .get<Member[]>(`${this.baseUrl}users`, { observe: 'response', params })
+      .pipe(
+        map((response) => {
+          if (response.body) {
+            this.paginatedResult.result = response.body;
+          }
+
+          const pagination = response.headers.get('Pagination');
+          if (pagination) {
+            this.paginatedResult.pagination = JSON.parse(pagination);
+          }
+
+          return this.paginatedResult;
+        })
+      );
   }
 
   getMember(username: string) {
