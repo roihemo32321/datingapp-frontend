@@ -4,6 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Member } from '../models/member';
 import { map, of } from 'rxjs';
 import { PaginationResult } from '../models/pagination';
+import { UserParams } from '../models/userParams';
 
 @Injectable({
   providedIn: 'root',
@@ -13,45 +14,65 @@ export class MembersService {
   members: Member[] = []; // Saving members in our service will improve our angular app because of services stays alive every time!
 
   // Add a map to cache page data
-  private memberCache = new Map<string, PaginationResult<Member[]>>();
+  private cachedData = new Map<string, PaginationResult<any>>();
 
   constructor(private http: HttpClient) {}
 
-  getMembers(page?: number, itemsPerPage?: number) {
-    // Generate a cache key based on page and size
-    const cacheKey = `${page}-${itemsPerPage}`;
+  getMembers(userParams: UserParams) {
+    let params = this.generatePaginationParams(
+      userParams.pageNumber,
+      userParams.pageSize
+    );
 
+    params = params.append('gender', userParams.gender);
+    params = params.append('minAge', userParams.minAge.toString());
+    params = params.append('maxAge', userParams.maxAge.toString());
+
+    const cacheKey = `${userParams.pageNumber}-${userParams.pageSize}-${userParams.gender}-${userParams.minAge}-${userParams.maxAge}`;
+
+    return this.getPaginatedResult<Member[]>(
+      `${this.baseUrl}users`,
+      params,
+      cacheKey
+    );
+  }
+
+  private getPaginatedResult<T>(
+    url: string,
+    params: HttpParams,
+    cacheKey: string
+  ) {
     // Check if data is already cached
-    if (this.memberCache.has(cacheKey)) {
-      return of(this.memberCache.get(cacheKey));
+    if (this.cachedData.has(cacheKey)) {
+      return of(this.cachedData.get(cacheKey));
     }
 
-    let params = new HttpParams()
-      .set('pageNumber', page!.toString())
-      .set('pageSize', itemsPerPage!.toString());
-
     // If not cached, fetch data from server
-    return this.http
-      .get<Member[]>(`${this.baseUrl}users`, { observe: 'response', params })
-      .pipe(
-        map((res) => {
-          const paginatedResult = new PaginationResult<Member[]>();
+    return this.http.get<T>(url, { observe: 'response', params }).pipe(
+      map((res) => {
+        const paginatedResult = new PaginationResult<T>();
 
-          // Save response to cache
-          if (res.body) {
-            paginatedResult.result = res.body;
-          }
+        // Save response to cache
+        if (res.body) {
+          paginatedResult.result = res.body;
+        }
 
-          const pagination = res.headers.get('Pagination');
+        const pagination = res.headers.get('Pagination');
 
-          if (pagination) {
-            paginatedResult.pagination = JSON.parse(pagination);
-          }
+        if (pagination) {
+          paginatedResult.pagination = JSON.parse(pagination);
+        }
 
-          this.memberCache.set(cacheKey, paginatedResult);
-          return paginatedResult;
-        })
-      );
+        this.cachedData.set(cacheKey, paginatedResult);
+        return paginatedResult;
+      })
+    );
+  }
+
+  private generatePaginationParams(pageNumber: number, pageSize: number) {
+    return new HttpParams()
+      .set('pageNumber', pageNumber.toString())
+      .set('pageSize', pageSize.toString());
   }
 
   getMember(username: string) {

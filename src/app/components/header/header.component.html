@@ -13,7 +13,7 @@
 
 	<div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user">
 		<img src={{user.photoUrl}} alt={{user.username}} class="user-img" />
-		<p>Welcome: {{user.username}} ^</p>
+		<p>Welcome: {{user.knownAs}} ^</p>
 		<div class="dropdown-content">
 			<button routerLink="/member/edit">Edit</button>
 			<button (click)="logout()">Logout</button>

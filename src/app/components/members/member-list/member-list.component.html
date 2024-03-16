@@ -1,4 +1,32 @@
 <div class="member-list-container">
+	<div class="header-container">
+		<h1>Your Matches - {{pagination?.totalItems}} found</h1>
+		<form *ngIf="userParams" #form="ngForm" class="filter-form" (ngSubmit)="loadMembers()" autocomplete="off">
+			<div class="single-field">
+				<label>Age from:</label>
+				<input type="number" name="minAge" [(ngModel)]="userParams.minAge" min="18" />
+			</div>
+			<div class="single-field">
+				<label>Age to:</label>
+				<input type="number" name="maxAge" [(ngModel)]="userParams.maxAge" max="120" />
+			</div>
+
+			<div class="single-field">
+				<label>Show:</label>
+				<select name="gender" [(ngModel)]="userParams.gender">
+					<option *ngFor="let gender of genderList" [value]="gender.value">
+						{{gender.viewValue}}
+					</option>
+				</select>
+			</div>
+
+			<div class="btns-container">
+				<button type="submit">Apply Filters</button>
+				<button (click)="resetFilters()" type="submit">Reset Filters</button>
+			</div>
+		</form>
+	</div>
+
 	<div class="members-list">
 		<app-member-card *ngFor="let member of members" [member]="member"></app-member-card>
 	</div>
