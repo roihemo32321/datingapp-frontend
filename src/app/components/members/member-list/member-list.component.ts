@@ -42,19 +42,22 @@ export class MemberListComponent implements OnInit {
   }
 
   loadMembers() {
-    console.log('Check');
-
     if (!this.userParams) return;
-    console.log('Check');
 
     // Load members for current page
     this.memberService.getMembers(this.userParams).subscribe({
       next: (res) => {
         this.members = res?.result;
         this.pagination = res?.pagination;
-        console.log(res);
       },
     });
+  }
+
+  setOrderByMembers(orderBy: string) {
+    if (this.userParams) {
+      this.userParams.orderBy = orderBy;
+      this.loadMembers();
+    }
   }
 
   resetFilters() {

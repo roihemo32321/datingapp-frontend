@@ -24,6 +24,11 @@
 				<button type="submit">Apply Filters</button>
 				<button (click)="resetFilters()" type="submit">Reset Filters</button>
 			</div>
+
+			<div class="order-by-container">
+				<button type="button" name="orderBy" (click)="setOrderByMembers('lastActive')" value="lastActive">Last Active</button>
+				<button type="button" name="orderBy" (click)="setOrderByMembers('created')" value="created">Newest Members</button>
+			</div>
 		</form>
 	</div>
 

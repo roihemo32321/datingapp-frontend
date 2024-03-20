@@ -27,8 +27,10 @@ export class MembersService {
     params = params.append('gender', userParams.gender);
     params = params.append('minAge', userParams.minAge.toString());
     params = params.append('maxAge', userParams.maxAge.toString());
+    params = params.append('orderBy', userParams.orderBy);
 
-    const cacheKey = `${userParams.pageNumber}-${userParams.pageSize}-${userParams.gender}-${userParams.minAge}-${userParams.maxAge}`;
+    const cacheKey = `${userParams.pageNumber}-${userParams.pageSize}-${userParams.gender}-${userParams.minAge}-${userParams.maxAge}-${userParams.orderBy}`;
+    console.log(cacheKey);
 
     return this.getPaginatedResult<Member[]>(
       `${this.baseUrl}users`,
@@ -44,6 +46,8 @@ export class MembersService {
   ) {
     // Check if data is already cached
     if (this.cachedData.has(cacheKey)) {
+      console.log('Using cached data');
+
       return of(this.cachedData.get(cacheKey));
     }
 

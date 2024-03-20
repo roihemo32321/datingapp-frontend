@@ -30,6 +30,16 @@
         }
       }
 
+      .order-by-container {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        button {
+          cursor: pointer;
+          padding: 0.55rem 1.15rem;
+        }
+      }
+
       .btns-container {
         display: flex;
         gap: 0.5rem;
