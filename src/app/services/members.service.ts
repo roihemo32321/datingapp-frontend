@@ -15,6 +15,7 @@ export class MembersService {
 
   // Add a map to cache page data
   private cachedData = new Map<string, PaginationResult<any>>();
+  private memberCache = new Map<string, Member>();
 
   constructor(private http: HttpClient) {}
 
@@ -29,8 +30,7 @@ export class MembersService {
     params = params.append('maxAge', userParams.maxAge.toString());
     params = params.append('orderBy', userParams.orderBy);
 
-    const cacheKey = `${userParams.pageNumber}-${userParams.pageSize}-${userParams.gender}-${userParams.minAge}-${userParams.maxAge}-${userParams.orderBy}`;
-    console.log(cacheKey);
+    const cacheKey = Object.values(userParams).join('-');
 
     return this.getPaginatedResult<Member[]>(
       `${this.baseUrl}users`,
@@ -47,7 +47,6 @@ export class MembersService {
     // Check if data is already cached
     if (this.cachedData.has(cacheKey)) {
       console.log('Using cached data');
-
       return of(this.cachedData.get(cacheKey));
     }
 
@@ -80,13 +79,20 @@ export class MembersService {
   }
 
   getMember(username: string) {
-    const member = this.members.find((x) => x.userName === username); // Trying to find if we have the user in our members list to prevent a request.
-
+    // Check if we have the member cached using the username as the key
+    const member = this.memberCache.get(username) as Member;
     if (member) {
-      return of(member);
+      console.log('Using cached member');
+      return of(member); // Return the cached member as an observable
     }
 
-    return this.http.get<Member>(`${this.baseUrl}users/${username}`);
+    // If not cached, fetch the member from the server and cache it
+    return this.http.get<Member>(`${this.baseUrl}users/${username}`).pipe(
+      map((member) => {
+        this.memberCache.set(username, member); // Cache the fetched member
+        return member;
+      })
+    );
   }
 
   /**
