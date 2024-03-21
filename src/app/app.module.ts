@@ -27,6 +27,7 @@ import { EditPhotosComponent } from './components/members/edit-photos/edit-photo
 import { TextInputComponent } from './components/shared/text-input/text-input.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { TimeAgoPipe } from './pipes/time-ago.pipe';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     FileUploadComponent,
     EditPhotosComponent,
     TextInputComponent,
+    TimeAgoPipe,
   ],
   imports: [
     BrowserModule,
