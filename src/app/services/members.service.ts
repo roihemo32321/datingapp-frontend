@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Member } from '../models/member';
-import { map, of } from 'rxjs';
+import { map, of, take } from 'rxjs';
 import { PaginationResult } from '../models/pagination';
 import { UserParams } from '../models/userParams';
+import { AccountService } from './account.service';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -12,12 +14,26 @@ import { UserParams } from '../models/userParams';
 export class MembersService {
   baseUrl = environment.apiUrl;
   members: Member[] = []; // Saving members in our service will improve our angular app because of services stays alive every time!
+  user: User | undefined;
+  userParams: UserParams | undefined;
 
   // Add a map to cache page data
   private cachedData = new Map<string, PaginationResult<any>>();
   private memberCache = new Map<string, Member>();
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private accountService: AccountService
+  ) {
+    this.accountService.currentUser$.pipe(take(1)).subscribe({
+      next: (user) => {
+        if (user) {
+          this.user = user;
+          this.userParams = new UserParams(user);
+        }
+      },
+    });
+  }
 
   getMembers(userParams: UserParams) {
     let params = this.generatePaginationParams(
@@ -93,6 +109,22 @@ export class MembersService {
         return member;
       })
     );
+  }
+
+  getUserParams() {
+    return this.userParams;
+  }
+
+  setUserParams(userParams: UserParams) {
+    this.userParams = userParams;
+  }
+
+  resetUserParams() {
+    if (this.user) {
+      this.userParams = new UserParams(this.user);
+      return this.userParams;
+    }
+    return;
   }
 
   /**

@@ -17,24 +17,13 @@ export class MemberListComponent implements OnInit {
   members: Member[] | undefined;
   pagination: Pagination | undefined;
   userParams: UserParams | undefined;
-  user: User | undefined;
   genderList = [
     { value: 'male', viewValue: 'Males' },
     { value: 'female', viewValue: 'Females' },
   ];
 
-  constructor(
-    private memberService: MembersService,
-    private accountService: AccountService
-  ) {
-    this.accountService.currentUser$.pipe(take(1)).subscribe({
-      next: (user) => {
-        if (user) {
-          this.user = user;
-          this.userParams = new UserParams(user);
-        }
-      },
-    });
+  constructor(private memberService: MembersService) {
+    this.userParams = this.memberService.getUserParams();
   }
 
   ngOnInit(): void {
@@ -42,15 +31,16 @@ export class MemberListComponent implements OnInit {
   }
 
   loadMembers() {
-    if (!this.userParams) return;
-
-    // Load members for current page
-    this.memberService.getMembers(this.userParams).subscribe({
-      next: (res) => {
-        this.members = res?.result;
-        this.pagination = res?.pagination;
-      },
-    });
+    if (this.userParams) {
+      this.memberService.setUserParams(this.userParams);
+      // Load members for current page
+      this.memberService.getMembers(this.userParams).subscribe({
+        next: (res) => {
+          this.members = res?.result;
+          this.pagination = res?.pagination;
+        },
+      });
+    }
   }
 
   setOrderByMembers(orderBy: string) {
@@ -61,16 +51,15 @@ export class MemberListComponent implements OnInit {
   }
 
   resetFilters() {
-    if (this.user) {
-      this.userParams = new UserParams(this.user); // resets our userParams to the default.
-      this.loadMembers();
-    }
+    this.userParams = this.memberService.resetUserParams();
+    this.loadMembers();
   }
 
   changePage($event: PageEvent) {
     if (this.userParams) {
       this.userParams.pageNumber = $event.pageIndex + 1;
       this.userParams.pageSize = $event.pageSize;
+      this.memberService.setUserParams(this.userParams);
       this.loadMembers();
     }
   }
