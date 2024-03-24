@@ -8,15 +8,12 @@
   border-radius: 0.25rem;
   text-decoration: none;
   color: black;
+  position: relative;
 
   .img-wrapper {
     overflow: hidden;
-    &:hover {
-      img {
-        transform: scale(1.1, 1.1);
-        opacity: 0.8;
-      }
-    }
+    
+
 
     img {
       width: 15rem;
@@ -25,4 +22,39 @@
       transition: 325ms;
     }
   }
+
+  .btns-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    visibility: hidden;
+    transition: 325ms;
+    button {
+      padding: 0.5rem 1.25rem;
+      cursor: pointer;
+    }
+  }
+
+  &:hover {
+    .img-wrapper, .card-body{
+      filter: blur(0.15rem);
+    }
+
+      .img-wrapper {
+        img {
+          transform: scale(1.1, 1.1);
+          opacity: 0.8;
+        }
+      }
+    
+    .btns-container {
+      visibility: visible;
+      z-index: 1000;
+      opacity: 1;
+    }
+  }
 }
+
+

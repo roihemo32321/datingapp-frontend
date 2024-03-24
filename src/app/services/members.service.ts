@@ -70,13 +70,15 @@ export class MembersService {
     return this.http.get<T>(url, { observe: 'response', params }).pipe(
       map((res) => {
         const paginatedResult = new PaginationResult<T>();
-
+        
         // Save response to cache
         if (res.body) {
           paginatedResult.result = res.body;
         }
 
         const pagination = res.headers.get('Pagination');
+        
+        
 
         if (pagination) {
           paginatedResult.pagination = JSON.parse(pagination);
@@ -117,6 +119,25 @@ export class MembersService {
 
   setUserParams(userParams: UserParams) {
     this.userParams = userParams;
+  }
+
+  addLike(username: string) {
+    return this.http.post(`${this.baseUrl}likes/${username}`, {});
+  }
+
+
+  getLikes(predicate: string, pageNumber: number, pageSize: number) {
+    let params = this.generatePaginationParams(pageNumber, pageSize);
+    params = params.append('predicate', predicate);        
+
+    const cacheKey = `${predicate}-${pageNumber}-${pageSize}`;
+    
+
+    return this.getPaginatedResult<Member[]>(
+      `${this.baseUrl}likes`,
+      params,
+      cacheKey
+    );
   }
 
   resetUserParams() {

@@ -1,0 +1,22 @@
+.list-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+	.btns-container {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		button {
+			padding: 0.5rem 1.25rem;
+			cursor: pointer;
+		}
+	}
+
+	.users-container {
+		display: flex;
+		align-self: flex-start;
+		flex-wrap: wrap;
+		gap: 1rem;
+	}
+}
