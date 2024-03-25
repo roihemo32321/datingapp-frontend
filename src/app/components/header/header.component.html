@@ -12,7 +12,7 @@
 
 
 	<div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user">
-		<img src={{user.photoUrl}} alt={{user.username}} class="user-img" />
+		<img src="{{user.photoUrl || './assets/images/user.png'}}" alt={{user.username}} class="user-img" />
 		<p>Welcome: {{user.knownAs}} ^</p>
 		<div class="dropdown-content">
 			<button routerLink="/member/edit">Edit</button>
