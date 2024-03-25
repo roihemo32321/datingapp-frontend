@@ -1,8 +1,13 @@
 $defaultPadding: 2rem 10rem 2rem 10rem;
 
 main {
+  position: relative;
   padding: $defaultPadding;
   p {
     width: fit-content;
   }
+}
+
+.loading-body {
+  filter: blur(0.25rem);
 }

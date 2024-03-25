@@ -1,7 +1,6 @@
-<app-header></app-header>
-
+<app-header [ngClass]="{'loading-body': loadingService.isLoading$ | async}"></app-header>
 
 <main>
-	<router-outlet></router-outlet>
+	<div [ngClass]="{'loading-body': loadingService.isLoading$ | async}"><router-outlet></router-outlet></div>
 	<app-loading *ngIf="loadingService.isLoading$ | async"></app-loading>
 </main>
