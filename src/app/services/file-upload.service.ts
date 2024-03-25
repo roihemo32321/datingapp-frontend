@@ -2,9 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Photo } from '../models/photo';
-import { MembersService } from './members.service';
-import { AccountService } from './account.service';
-import { take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +15,7 @@ export class FileUploadService {
   uploadFileDb() {
     if (this.formData) {
       return this.http.post<Photo>(
-        this.baseUrl + 'users/add-photo',
+        `${this.baseUrl}users/add-photo`,
         this.formData
       );
     }

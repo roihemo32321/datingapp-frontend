@@ -1,34 +1,13 @@
-<form *ngIf="member" #editForm="ngForm" id="editForm" (ngSubmit)="updateMember()">
+<form *ngIf="editForm && member" [formGroup]="editForm" id="editForm" (ngSubmit)="updateMember()">
 	<h1>Edit profile of the user: {{member.knownAs}}</h1>
 	<div class="alert" *ngIf="editForm.dirty">
 		<p>Information: You have made changes. Any unsaved changes will be lost.</p>
 	</div>
 	<div class="grid-container">
-		<div class="main-edit">
-			<h3>Description:</h3>
-			<textarea class="textarea-container" rows="6" name="introduction" [(ngModel)]="member.introduction"></textarea>
+		<div class="grid-item" *ngFor="let section of formSections">
+			<label>{{section.label}}</label>
+			<input [type]="section.type" [formControlName]="section.controlName" />
 		</div>
-		<div class="main-edit">
-			<h3>Looking For:</h3>
-			<textarea class="textarea-container" rows="6" name="lookingFor" [(ngModel)]="member.lookingFor"></textarea>
-		</div>
-		<div class="main-edit">
-			<h3>Interests:</h3>
-			<textarea class="textarea-container" rows="6" name="interests" [(ngModel)]="member.interests"></textarea>
-		</div>
-
-		<div class="location-details">
-			<div class="location-edit">
-				<h3>City: </h3>
-				<input type="text" [(ngModel)]="member.city" name="city" />
-			</div>
-			<div class="location-edit">
-				<h3>Country: </h3>
-				<input type="text" [(ngModel)]="member.country" name="country" />
-			</div>
-		</div>
-		<app-file-upload [member]="member"></app-file-upload>
-		<app-edit-photos [member]="member"></app-edit-photos>
 	</div>
 	<div class=" btns-container">
 		<button type="submit" [disabled]="!editForm.dirty">Save</button>

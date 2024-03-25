@@ -3,8 +3,8 @@ import { Member } from '../../../models/member';
 import { User } from '../../../models/user';
 import { MembersService } from '../../../services/members.service';
 import { AccountService } from '../../../services/account.service';
-import { map, take } from 'rxjs';
-import { NgForm } from '@angular/forms';
+import { switchMap, take } from 'rxjs';
+import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { FileUploadService } from '../../../services/file-upload.service';
 
 @Component({
@@ -21,14 +21,23 @@ export class MemberEditComponent implements OnInit {
       $event.returnValue = true;
     }
   }
-  @ViewChild('editForm') editForm: NgForm | undefined;
+  editForm: FormGroup | undefined;
+
+  formSections: { label: string; controlName: string; type: string }[] = [
+    { label: 'Introduction', controlName: 'introduction', type: 'textarea' },
+    { label: 'Looking For', controlName: 'lookingFor', type: 'textarea' },
+    { label: 'Interests', controlName: 'interests', type: 'textarea' },
+    { label: 'City', controlName: 'city', type: 'text' },
+    { label: 'Country', controlName: 'country', type: 'text' },
+  ];
+
   member: Member | undefined;
   user: User | null = null;
 
   constructor(
+    private fb: FormBuilder,
     private accountService: AccountService,
-    private memberService: MembersService,
-    private uploadFileService: FileUploadService
+    private memberService: MembersService
   ) {
     this.accountService.currentUser$
       .pipe(take(1))
@@ -41,27 +50,23 @@ export class MemberEditComponent implements OnInit {
 
   loadMember() {
     if (!this.user) return;
-    this.memberService
-      .getMember(this.user.username)
-      .subscribe({ next: (member) => (this.member = member) });
+    this.memberService.getMember(this.user.username).subscribe({
+      next: (member) => {
+        this.member = member;
+        this.editForm = this.fb.group({
+          introduction: [member.introduction],
+          lookingFor: [member.lookingFor],
+          interests: [member.interests],
+          city: [member.city],
+          country: [member.country],
+        });
+      },
+    });
   }
 
   updateMember() {
-    const fileUpload$ = this.uploadFileService.uploadFileDb();
-    if (fileUpload$) {
-      fileUpload$.subscribe({
-        next: (photo) => {
-          if (this.member?.photos.length === 0) {
-            this.member.photoUrl = photo.url;
-          }
-
-          this.member?.photos.push(photo);
-        },
-      });
-    }
-
     this.memberService.updateMember(this.editForm?.value).subscribe({
-      next: () => this.editForm?.reset(this.member),
+      next: () => this.loadMember(),
     });
   }
 }

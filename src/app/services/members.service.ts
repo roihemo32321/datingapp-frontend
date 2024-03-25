@@ -7,20 +7,21 @@ import { PaginationResult } from '../models/pagination';
 import { UserParams } from '../models/userParams';
 import { AccountService } from './account.service';
 import { User } from '../models/user';
-import { getPaginatedResult, generatePaginationParams } from "./paginationHelper";
+import {
+  getPaginatedResult,
+  generatePaginationParams,
+} from './paginationHelper';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MembersService {
   baseUrl = environment.apiUrl;
-  members: Member[] = []; // Saving members in our service will improve our angular app because of services stays alive every time!
   user: User | undefined;
   userParams: UserParams | undefined;
 
   // Add a map to cache page data
   private cachedData = new Map<string, PaginationResult<any>>();
-  private memberCache = new Map<string, Member>();
 
   constructor(
     private http: HttpClient,
@@ -54,21 +55,24 @@ export class MembersService {
       params,
       this.http,
       this.cachedData,
-      cacheKey,
+      cacheKey
     );
   }
   getMember(username: string) {
-    // Check if we have the member cached using the username as the key
-    const member = this.memberCache.get(username) as Member;
-    if (member) {
-      console.log('Using cached member');
-      return of(member); // Return the cached member as an observable
+    // Try to find the member in any cached page
+    for (const [, page] of this.cachedData) {
+      const member = page.result.find(
+        (member: Member) => member.username === username
+      );
+      if (member) {
+        console.log('Using cached member');
+        return of(member);
+      }
     }
 
-    // If not cached, fetch the member from the server and cache it
+    // If the member is not found in the cache, fetch from the server
     return this.http.get<Member>(`${this.baseUrl}users/${username}`).pipe(
       map((member) => {
-        this.memberCache.set(username, member); // Cache the fetched member
         return member;
       })
     );
@@ -86,13 +90,11 @@ export class MembersService {
     return this.http.post(`${this.baseUrl}likes/${username}`, {});
   }
 
-
   getLikes(predicate: string, pageNumber: number, pageSize: number) {
     let params = generatePaginationParams(pageNumber, pageSize);
-    params = params.append('predicate', predicate);        
+    params = params.append('predicate', predicate);
 
     const cacheKey = `${predicate}-${pageNumber}-${pageSize}`;
-    
 
     return getPaginatedResult<Member[]>(
       `${this.baseUrl}likes`,
@@ -118,11 +120,6 @@ export class MembersService {
    */
 
   updateMember(member: Member) {
-    return this.http.put(this.baseUrl + 'users', member).pipe(
-      map(() => {
-        const index = this.members.indexOf(member);
-        this.members[index] = { ...this.members[index], ...member };
-      })
-    );
+    return this.http.put(this.baseUrl + 'users', member);
   }
 }
