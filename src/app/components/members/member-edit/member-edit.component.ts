@@ -21,7 +21,6 @@ export class MemberEditComponent implements OnInit {
       $event.returnValue = true;
     }
   }
-  file: File | undefined;
   @ViewChild('editForm') editForm: NgForm | undefined;
   member: Member | undefined;
   user: User | null = null;
