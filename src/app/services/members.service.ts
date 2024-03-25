@@ -21,7 +21,8 @@ export class MembersService {
   userParams: UserParams | undefined;
 
   // Add a map to cache page data
-  private cachedData = new Map<string, PaginationResult<any>>();
+  private cachedData = new Map<string, PaginationResult<Member[]>>();
+  private memberCache = new Map<string, Member>();
 
   constructor(
     private http: HttpClient,
@@ -58,21 +59,19 @@ export class MembersService {
       cacheKey
     );
   }
+
   getMember(username: string) {
-    // Try to find the member in any cached page
-    for (const [, page] of this.cachedData) {
-      const member = page.result.find(
-        (member: Member) => member.username === username
-      );
-      if (member) {
-        console.log('Using cached member');
-        return of(member);
-      }
+    const member = this.memberCache.get(username);
+
+    if (member) {
+      console.log('Using cached member');
+      return of(member);
     }
 
     // If the member is not found in the cache, fetch from the server
     return this.http.get<Member>(`${this.baseUrl}users/${username}`).pipe(
       map((member) => {
+        this.memberCache.set(username, member);
         return member;
       })
     );
@@ -119,7 +118,16 @@ export class MembersService {
    * @returns
    */
 
-  updateMember(member: Member) {
-    return this.http.put(this.baseUrl + 'users', member);
+  updateMember(member: Member, username: string) {
+    return this.http.put(this.baseUrl + 'users', member).pipe(
+      map(() => {
+        const updateMember = {
+          ...this.memberCache.get(username),
+          ...member,
+        };
+
+        this.memberCache.set(username, updateMember);
+      })
+    );
   }
 }

@@ -12,9 +12,7 @@ export class MemberCardComponent implements OnInit {
 
   constructor(private memberService: MembersService) {}
 
-  ngOnInit(): void {
-    console.log(this.member);
-  }
+  ngOnInit(): void {}
   addLike(member: Member, event: MouseEvent) {
     event.preventDefault();
     event.stopPropagation();
