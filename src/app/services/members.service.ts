@@ -7,6 +7,7 @@ import { PaginationResult } from '../models/pagination';
 import { UserParams } from '../models/userParams';
 import { AccountService } from './account.service';
 import { User } from '../models/user';
+import { getPaginatedResult, generatePaginationParams } from "./paginationHelper";
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +37,7 @@ export class MembersService {
   }
 
   getMembers(userParams: UserParams) {
-    let params = this.generatePaginationParams(
+    let params = generatePaginationParams(
       userParams.pageNumber,
       userParams.pageSize
     );
@@ -48,54 +49,14 @@ export class MembersService {
 
     const cacheKey = Object.values(userParams).join('-');
 
-    return this.getPaginatedResult<Member[]>(
+    return getPaginatedResult<Member[]>(
       `${this.baseUrl}users`,
       params,
-      cacheKey
+      this.http,
+      this.cachedData,
+      cacheKey,
     );
   }
-
-  private getPaginatedResult<T>(
-    url: string,
-    params: HttpParams,
-    cacheKey: string
-  ) {
-    // Check if data is already cached
-    if (this.cachedData.has(cacheKey)) {
-      console.log('Using cached data');
-      return of(this.cachedData.get(cacheKey));
-    }
-
-    // If not cached, fetch data from server
-    return this.http.get<T>(url, { observe: 'response', params }).pipe(
-      map((res) => {
-        const paginatedResult = new PaginationResult<T>();
-        
-        // Save response to cache
-        if (res.body) {
-          paginatedResult.result = res.body;
-        }
-
-        const pagination = res.headers.get('Pagination');
-        
-        
-
-        if (pagination) {
-          paginatedResult.pagination = JSON.parse(pagination);
-        }
-
-        this.cachedData.set(cacheKey, paginatedResult);
-        return paginatedResult;
-      })
-    );
-  }
-
-  private generatePaginationParams(pageNumber: number, pageSize: number) {
-    return new HttpParams()
-      .set('pageNumber', pageNumber.toString())
-      .set('pageSize', pageSize.toString());
-  }
-
   getMember(username: string) {
     // Check if we have the member cached using the username as the key
     const member = this.memberCache.get(username) as Member;
@@ -127,15 +88,17 @@ export class MembersService {
 
 
   getLikes(predicate: string, pageNumber: number, pageSize: number) {
-    let params = this.generatePaginationParams(pageNumber, pageSize);
+    let params = generatePaginationParams(pageNumber, pageSize);
     params = params.append('predicate', predicate);        
 
     const cacheKey = `${predicate}-${pageNumber}-${pageSize}`;
     
 
-    return this.getPaginatedResult<Member[]>(
+    return getPaginatedResult<Member[]>(
       `${this.baseUrl}likes`,
       params,
+      this.http,
+      this.cachedData,
       cacheKey
     );
   }

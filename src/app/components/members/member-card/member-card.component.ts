@@ -13,14 +13,12 @@ export class MemberCardComponent implements OnInit {
   constructor(private memberService: MembersService) {}
 
   ngOnInit(): void {}
-
   addLike(member: Member, event: MouseEvent) {
     event.preventDefault();
     event.stopPropagation();
-    this.memberService.addLike(member.userName).subscribe({
+    this.memberService.addLike(member.username).subscribe({
       next: () => {
         console.log(`You liked ${member.knownAs}`);
-        
       },
       error: (error) => {
         console.log(error);
