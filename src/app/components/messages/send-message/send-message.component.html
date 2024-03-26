@@ -1,1 +1,10 @@
-<p>send-message works!</p>
+<div class="messages-container">
+	<div class="single-message-container" *ngFor="let message of messages">
+		<p>{{message.content}}</p>
+	</div>
+
+	<div class="send-message">
+		<input placeholder="Enter new message..." type="text" [(ngModel)]="newMessage" />
+		<button (click)="sendMessage()" [disabled]="!newMessage">Send</button>
+	</div>
+</div>

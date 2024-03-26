@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Message } from '../../../models/message';
+import { MessageService } from '../../../services/message.service';
 
 @Component({
   selector: 'app-send-message',
@@ -6,7 +8,33 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './send-message.component.scss',
 })
 export class SendMessageComponent implements OnInit {
-  constructor() {}
+  @Input() username?: string;
+  messages: Message[] = [];
+  newMessage: string = '';
 
-  ngOnInit(): void {}
+  constructor(private messageService: MessageService) {}
+
+  ngOnInit(): void {
+    this.loadMessages();
+  }
+
+  loadMessages() {
+    if (!this.username) return;
+
+    this.messageService.getMessageThread(this.username).subscribe({
+      next: (messages) => {
+        this.messages = messages;
+      },
+    });
+  }
+
+  sendMessage() {
+    if (!this.username) return;
+    this.messageService.sendMessage(this.username, this.newMessage).subscribe({
+      next: (message) => {
+        this.newMessage = '';
+        this.messages.push(message);
+      },
+    });
+  }
 }
