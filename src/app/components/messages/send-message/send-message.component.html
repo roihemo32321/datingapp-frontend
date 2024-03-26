@@ -1,6 +1,26 @@
 <div class="messages-container">
 	<div class="single-message-container" *ngFor="let message of messages">
-		<p>{{message.content}}</p>
+		<div class="img-container">
+			<img src="{{message.senderPhotoUrl || './assets/images/user.png'}}" alt="not loaded" />
+		</div>
+
+		<div class="message-info">
+			<div class="message-details">
+				<span class="sent-time">{{message.messageSent | timeAgo}}</span>
+				<span class="not-read" *ngIf="!message.dateRead && message.senderUsername != username">( unread )</span>
+				<span class="message-read" *ngIf="message.dateRead && message.senderUsername != username">( read {{message.dateRead | timeAgo}} )</span>
+			</div>
+
+			<p>{{message.content}}</p>
+
+		</div>
+
+	</div>
+
+	<div class="no-messages" *ngIf="messages.length === 0">
+		<h2>
+			No messages yet. Send the first one!
+		</h2>
 	</div>
 
 	<div class="send-message">
