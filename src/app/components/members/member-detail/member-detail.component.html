@@ -1,42 +1,49 @@
 <div class="member-details-container" *ngIf="member">
-	<h3>Hi There, Here you can get information about: {{member.knownAs}}</h3>
 	<div class="details-container">
 		<div class="img-container">
 			<img src="{{member.photoUrl || './assets/images/user.png'}}" alt={{member.knownAs}} />
 		</div>
 		<div class="info-container">
-			<div class="single-info">
-				<h4>Description:</h4>
-				<p>{{member.introduction}}</p>
+			<div class="single-info" *ngFor="let singleInfo of detailsMap">
+				<h4>{{singleInfo.label}}</h4>
+				<p *ngIf="singleInfo.value === 'lastActive' || singleInfo.value === 'created'; else otherInfo">
+					{{member[singleInfo.value] | timeAgo}}
+				</p>
+
+				<ng-template #otherInfo>
+					<p>{{member[singleInfo.value]}}</p>
+				</ng-template>
 			</div>
-			<div class="single-info">
-				<h4>Looking For:</h4>
-				<p>{{member.lookingFor}}</p>
-			</div>
-			<div class="single-info">
-				<h4>Age:</h4>
-				<p>{{member.age}}</p>
-			</div>
-			<div class="single-info">
-				<h4>Country:</h4>
-				<p>{{member.country}}</p>
-			</div>
-			<div class="single-info">
-				<h4>City:</h4>
-				<p>{{member.city}}</p>
-			</div>
-			<div class="single-info">
-				<h4>Member Since:</h4>
-				<p>{{member.created | date}}</p>
-			</div>
-			<div class="single-info">
-				<h4>Last Active:</h4>
-				<p>{{member.lastActive | timeAgo}}</p>
-			</div>
-			<div class="single-info">
-				<h4>Gender:</h4>
-				<p>{{member.gender}}</p>
+
+			<div class="actions-container">
+				<button (click)="currentView = 'more'" [disabled]="currentView === 'more'">More Info</button>
+				<button (click)="currentView = 'message'" [disabled]="currentView === 'message'">Message</button>
 			</div>
 		</div>
 	</div>
+
+	<div class="main-member-view">
+		<h1>{{currentView === 'more' ? "Here you can find more details about the user:" : "Send message to user:"}}</h1>
+		<div class="main-member-details-container" *ngIf="currentView === 'more'; else messageInfo">
+			<div class="single-info" *ngFor="let singleInfo of mainDetailsMap">
+				<h2>{{singleInfo.label}}</h2>
+				<p>{{member[singleInfo.value]}}</p>
+			</div>
+
+			<div class="user-photos-container">
+				<h2>Photos:</h2>
+				<div class="photos-container">
+					<div class="photo-container" *ngFor="let photo of member.photos">
+						<img [src]="photo.url" alt="user photo" />
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<ng-template #messageInfo>
+			<app-send-message></app-send-message>
+		</ng-template>
+
+	</div>
+
 </div>

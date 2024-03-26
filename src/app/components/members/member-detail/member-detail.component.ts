@@ -10,6 +10,22 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class MemberDetailComponent implements OnInit {
   member: Member | undefined;
+  currentView: string = 'message';
+  detailsMap: { label: string; value: keyof Member }[] = [
+    { label: 'Known As:', value: 'knownAs' },
+    { label: 'Age:', value: 'age' },
+    { label: 'Gender:', value: 'gender' },
+    { label: 'Country:', value: 'country' },
+    { label: 'City:', value: 'city' },
+    { label: 'Last Active:', value: 'lastActive' },
+    { label: 'Member Since:', value: 'created' },
+  ];
+
+  mainDetailsMap: { label: string; value: keyof Member }[] = [
+    { label: 'Introduction:', value: 'introduction' },
+    { label: 'Looking For:', value: 'lookingFor' },
+    { label: 'Interests:', value: 'interests' },
+  ];
 
   constructor(
     private memberService: MembersService,

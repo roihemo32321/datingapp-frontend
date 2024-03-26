@@ -29,6 +29,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { EditInfoComponent } from './components/members/member-edit/edit-info/edit-info.component';
+import { SendMessageComponent } from './components/messages/send-message/send-message.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { EditInfoComponent } from './components/members/member-edit/edit-info/ed
     TextInputComponent,
     TimeAgoPipe,
     EditInfoComponent,
+    SendMessageComponent,
   ],
   imports: [
     BrowserModule,
