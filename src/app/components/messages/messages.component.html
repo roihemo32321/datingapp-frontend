@@ -24,13 +24,13 @@
 					<td>{{message.content}}</td>
 					<td>
 						<div class="img-details" *ngIf="container === 'Outbox'; else Inbox">
-							<img src="{{message.recipientPhotoUrl || './assets/user.png'}}" alt="recipient photo">
+							<img [src]="message.recipientPhotoUrl || './assets/images/user.png'" alt="recipient photo">
 							<strong>{{message.recipientUsername}}</strong>
 						</div>
 
 						<ng-template #Inbox>
 							<div class="img-details">
-								<img src="{{message.senderPhotoUrl || './assets/user.png'}}" alt="recipient photo">
+								<img [src]="message.senderPhotoUrl || './assets/images/user.png'" alt="sender photo">
 								<strong>{{message.senderUsername}}</strong>
 							</div>
 						</ng-template>
@@ -39,10 +39,15 @@
 
 					<td>{{message.messageSent | timeAgo}}</td>
 					<td>
-						<button class="delete-btn">Delete</button>
+						<button class="delete-btn" (click)="deleteMessage(message.id)">Delete</button>
 					</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
+
+	<mat-paginator *ngIf="pagination" [pageSize]="pagination.itemsPerPage" [length]="pagination.totalItems" (page)="changePage($event)"
+		[pageSizeOptions]="[4, 8, 10]"></mat-paginator>
+
+
 </div>
