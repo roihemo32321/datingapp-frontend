@@ -1,1 +1,48 @@
-<p>messages works!</p>
+<div class="view-messages-container">
+	<div class="view-options">
+		<button class="btn-style" [disabled]="container === button" (click)="container = button; loadMessages()"
+			*ngFor="let button of viewOptions">{{button}}</button>
+	</div>
+
+	<div class="no-messages" *ngIf="messages?.length === 0">
+		<h1>No messages</h1>
+	</div>
+
+	<div class="messages-container" *ngIf="messages && messages.length > 0">
+		<table>
+			<thead>
+				<tr>
+					<th>Message</th>
+					<th>From / To</th>
+					<th>Sent / Received</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr *ngFor="let message of messages">
+					<td>{{message.content}}</td>
+					<td>
+						<div class="img-details" *ngIf="container === 'Outbox'; else Inbox">
+							<img src="{{message.recipientPhotoUrl || './assets/user.png'}}" alt="recipient photo">
+							<strong>{{message.recipientUsername}}</strong>
+						</div>
+
+						<ng-template #Inbox>
+							<div class="img-details">
+								<img src="{{message.senderPhotoUrl || './assets/user.png'}}" alt="recipient photo">
+								<strong>{{message.senderUsername}}</strong>
+							</div>
+						</ng-template>
+
+					</td>
+
+					<td>{{message.messageSent | timeAgo}}</td>
+					<td>
+						<button class="delete-btn">Delete</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
