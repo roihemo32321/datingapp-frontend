@@ -1,29 +1,45 @@
-import { Component, Input } from '@angular/core';
-import { Member } from '../../../models/member';
-import { FileUploadService } from '../../../services/file-upload.service';
-import { Photo } from '../../../models/photo';
-import { User } from '../../../models/user';
-import { AccountService } from '../../../services/account.service';
-import { take } from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
+import { Member } from '../../../../models/member';
+import { User } from '../../../../models/user';
+import { Photo } from '../../../../models/photo';
+import { FileUploadService } from '../../../../services/file-upload.service';
+import { AccountService } from '../../../../services/account.service';
 
 @Component({
   selector: 'app-edit-photos',
   templateUrl: './edit-photos.component.html',
   styleUrl: './edit-photos.component.scss',
 })
-export class EditPhotosComponent {
+export class EditPhotosComponent implements OnInit {
   @Input() member: Member | undefined;
-  user: User | undefined;
+  @Input() user: User | undefined;
 
   constructor(
     private uploadPhotoService: FileUploadService,
     private accountService: AccountService
-  ) {
-    this.accountService.currentUser$.pipe(take(1)).subscribe({
-      next: (user) => {
-        if (user) this.user = user;
-      },
-    });
+  ) {}
+
+  ngOnInit(): void {}
+
+  uploadFile(event: any) {
+    const file = event.target.files[0];
+    const fileInputElement = event.target;
+    if (file && this.user) {
+      const formData = new FormData();
+      formData.append('File', file);
+      this.uploadPhotoService.uploadFile(formData);
+      const uploadPhoto$ = this.uploadPhotoService.uploadFileDb();
+      if (uploadPhoto$) {
+        uploadPhoto$.subscribe({
+          next: (photo) => {
+            this.member?.photos.push(photo);
+          },
+          complete: () => {
+            fileInputElement.value = null;
+          },
+        });
+      }
+    }
   }
 
   setMainPhoto(photo: Photo) {

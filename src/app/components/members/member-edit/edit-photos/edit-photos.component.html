@@ -1,0 +1,28 @@
+<div class="user-images-container" *ngIf="user && member">
+	<div class="current-image">
+		<h2>Current image</h2>
+		<img [src]="user.photoUrl || './assets/images/user.png'" alt="user img not loaded" />
+	</div>
+
+	<div class="edit-images">
+		<div class="all-user-images">
+			<h2>All user images:</h2>
+			<div class="images-controls">
+				<div class="user-img-control" *ngFor="let photo of member.photos">
+					<img src="{{photo.url}}" alt="photo of user" class="img-style" />
+					<div class="btns-container">
+						<button (click)="setMainPhoto(photo)" [disabled]="photo.isMain">Main</button>
+						<button (click)="deletePhoto(photo.id)" [disabled]="photo.isMain">Delete</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="add-img">
+			<h2>Add Image:</h2>
+			<input type="file" accept="image/jpeg, image/png" (change)="uploadFile($event)" />
+		</div>
+	</div>
+
+</div>

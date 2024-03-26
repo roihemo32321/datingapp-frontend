@@ -23,11 +23,12 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { LoadingComponent } from './components/loading/loading.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FileUploadComponent } from './components/shared/file-upload/file-upload.component';
-import { EditPhotosComponent } from './components/members/edit-photos/edit-photos.component';
+import { EditPhotosComponent } from './components/members/member-edit/edit-photos/edit-photos.component';
 import { TextInputComponent } from './components/shared/text-input/text-input.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
+import { EditInfoComponent } from './components/members/member-edit/edit-info/edit-info.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
     EditPhotosComponent,
     TextInputComponent,
     TimeAgoPipe,
+    EditInfoComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,16 +1,12 @@
-<form *ngIf="editForm && member" [formGroup]="editForm" id="editForm" (ngSubmit)="updateMember()">
+<div class="edit-user-container" *ngIf="member && user">
 	<h1>Edit profile of the user: {{member.knownAs}}</h1>
-	<div class="alert" *ngIf="editForm.dirty">
-		<p>Information: You have made changes. Any unsaved changes will be lost.</p>
+	<div class="edit-options">
+		<button (click)="currentEdit = 'info'" [disabled]="currentEdit === 'info'">Edit Profile</button>
+		<button (click)="currentEdit = 'photos'" [disabled]="currentEdit === 'photos'">Edit Images</button>
 	</div>
-	<div class="grid-container">
-		<div class="grid-item" *ngFor="let section of formSections">
-			<label>{{section.label}}</label>
-			<input [type]="section.type" [formControlName]="section.controlName" />
-		</div>
+
+	<div class="current-form">
+		<app-edit-info *ngIf="currentEdit === 'info'" [member]="member" [user]="user"></app-edit-info>
+		<app-edit-photos *ngIf="currentEdit === 'photos'" [member]="member" [user]="user"></app-edit-photos>
 	</div>
-	<div class=" btns-container">
-		<button type="submit" [disabled]="!editForm.dirty">Save</button>
-		<button routerLink="/members">Cancel</button>
-	</div>
-</form>
+</div>

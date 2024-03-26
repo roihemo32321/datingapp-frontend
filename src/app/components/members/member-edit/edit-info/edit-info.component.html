@@ -1,0 +1,17 @@
+<form *ngIf="editForm && member" [formGroup]="editForm" id="editForm" (ngSubmit)="updateMember()">
+	<div class="alert" *ngIf="editForm.dirty">
+		<p>Information: You have made changes. Any unsaved changes will be lost.</p>
+	</div>
+
+	<div class="grid-container">
+		<div class="grid-item" *ngFor="let section of formSections">
+			<label>{{section.label}}</label>
+			<input [type]="section.type" [formControlName]="section.controlName" />
+		</div>
+	</div>
+
+	<div class=" btns-container">
+		<button type="submit" [disabled]="!editForm.dirty">Save</button>
+		<button routerLink="/members">Cancel</button>
+	</div>
+</form>

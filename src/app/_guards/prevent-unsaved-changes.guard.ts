@@ -4,7 +4,7 @@ import { MemberEditComponent } from '../components/members/member-edit/member-ed
 export const preventUnsavedChangesGuard: CanDeactivateFn<
   MemberEditComponent
 > = (component) => {
-  if (component.editForm?.dirty) {
+  if (component.currentEdit) {
     return confirm(
       'Are you sure you want to continue? Ant unsaved changes will be lost!'
     );
