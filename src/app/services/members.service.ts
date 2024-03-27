@@ -36,6 +36,11 @@ export class MembersService {
         }
       },
     });
+
+    // Subscribe for logout event.
+    this.accountService.logout$.subscribe(() => {      
+      this.resetUserParamsAndCache(); // Reset cache and params when logout.
+    });
   }
 
   getMembers(userParams: UserParams) {
@@ -110,6 +115,14 @@ export class MembersService {
       return this.userParams;
     }
     return;
+  }
+
+  resetUserParamsAndCache() {
+    if (this.user) {
+      this.userParams = new UserParams(this.user);
+    }
+    this.cachedData.clear();
+    this.memberCache.clear();
   }
 
   /**
