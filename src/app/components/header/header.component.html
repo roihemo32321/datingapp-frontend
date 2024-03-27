@@ -6,7 +6,7 @@
 
 	<form #loginForm="ngForm" (ngSubmit)="login()" autocomplete="off" *ngIf="!(accountService.currentUser$ | async)">
 		<input name="username" [(ngModel)]="model.username" type="text" placeholder="Username" />
-		<input name="password" [(ngModel)]="model.password" type="password" placeholder="Password" />
+		<input name="password" [(ngModel)]="model.password" type="password" placeholder="Password" autocomplete="true" />
 		<button type="submit">Login</button>
 	</form>
 
