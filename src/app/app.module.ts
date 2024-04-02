@@ -30,6 +30,12 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { EditInfoComponent } from './components/members/member-edit/edit-info/edit-info.component';
 import { SendMessageComponent } from './components/messages/send-message/send-message.component';
+import { AdminPanelComponent } from './components/admin/admin-panel/admin-panel.component';
+import { HasRoleDirective } from './_directives/has-role.directive';
+import { UserManagementComponent } from './components/admin/user-management/user-management.component';
+import { PhotoManagementComponent } from './components/admin/photo-management/photo-management.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { EditRolesModalComponent } from './components/modals/edit-roles-modal/edit-roles-modal.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +60,11 @@ import { SendMessageComponent } from './components/messages/send-message/send-me
     TimeAgoPipe,
     EditInfoComponent,
     SendMessageComponent,
+    AdminPanelComponent,
+    HasRoleDirective,
+    UserManagementComponent,
+    PhotoManagementComponent,
+    EditRolesModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,6 +74,7 @@ import { SendMessageComponent } from './components/messages/send-message/send-me
     ReactiveFormsModule,
     FontAwesomeModule,
     MatPaginatorModule,
+    MatDialogModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

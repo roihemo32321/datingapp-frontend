@@ -11,6 +11,8 @@ import { NotFoundComponent } from './components/errors/not-found/not-found.compo
 import { ServerErrorComponent } from './components/errors/server-error/server-error.component';
 import { MemberEditComponent } from './components/members/member-edit/member-edit.component';
 import { preventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
+import { AdminPanelComponent } from './components/admin/admin-panel/admin-panel.component';
+import { adminGuard } from './_guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -33,7 +35,7 @@ const routes: Routes = [
       {
         path: 'member/edit',
         component: MemberEditComponent,
-        canDeactivate: [preventUnsavedChangesGuard],
+        canDeactivate: [preventUnsavedChangesGuard], // a guard that we created to prevent the user from navigating away from the page if they have unsaved changes
       },
       {
         path: 'lists',
@@ -42,6 +44,11 @@ const routes: Routes = [
       {
         path: 'messages',
         component: MessagesComponent,
+      },
+      {
+        path: 'admin',
+        component: AdminPanelComponent,
+        canActivate: [adminGuard],
       },
     ],
   },

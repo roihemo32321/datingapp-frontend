@@ -1,0 +1,16 @@
+<div class="admin-panel-container">
+	<h1>Admin Panel</h1>
+	<div class="tab-header">
+		<button (click)="selectedTab = 'users'" *appHasRole="['Admin']" [disabled]="selectedTab === 'users'">Users</button>
+		<button (click)="selectedTab = 'photos'" *appHasRole="['Admin', 'Moderator']" [disabled]="selectedTab === 'photos'">Photos</button>
+	</div>
+
+	<div class="tab-panel">
+		<div class="users-tab" *ngIf="selectedTab === 'users'">
+			<app-user-management *appHasRole="['Admin']"></app-user-management>
+		</div>
+		<div class="photos-tab" *ngIf="selectedTab === 'photos'">
+			<app-photo-management *appHasRole="['Admin', 'Moderator']"></app-photo-management>
+		</div>
+	</div>
+</div>

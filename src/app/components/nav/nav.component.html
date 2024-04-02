@@ -9,6 +9,9 @@
 		<li>
 			<a routerLink="/messages" routerLinkActive="active">Messages</a>
 		</li>
+		<li *appHasRole="['Admin', 'Moderator']">
+			<a routerLink="/admin" routerLinkActive="active">Admin</a>
+		</li>
 		<li>
 			<a href="#" (click)="handleLogout()">Logout</a>
 		</li>

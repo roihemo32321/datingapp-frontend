@@ -1,0 +1,12 @@
+<div class="edit-roles-modal">
+	<h1>Edit roles for {{data.username}}</h1>
+	<form #rolesForm="ngForm" class="roles">
+		<div *ngFor="let role of rolesOptions">
+			<input type="checkbox" value="role" id="checkbox-input" [checked]="data.roles.includes(role)" (change)="toggleRole(role)"
+				[disabled]="role === 'Admin' && data.username === 'roihemo'">
+			<label for="checkbox-input">{{role}}</label>
+		</div>
+
+		<button type="button" (click)="dialogRef.close(selectedRoles)">Submit</button>
+	</form>
+</div>
