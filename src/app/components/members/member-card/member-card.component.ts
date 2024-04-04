@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Member } from '../../../models/member';
 import { MembersService } from '../../../services/members.service';
+import { PresenceService } from '../../../services/presence.service';
 
 @Component({
   selector: 'app-member-card',
@@ -10,7 +11,10 @@ import { MembersService } from '../../../services/members.service';
 export class MemberCardComponent implements OnInit {
   @Input() member: Member | undefined;
 
-  constructor(private memberService: MembersService) {}
+  constructor(
+    private memberService: MembersService,
+    public presenceService: PresenceService
+  ) {}
 
   ngOnInit(): void {}
   addLike(member: Member, event: MouseEvent) {

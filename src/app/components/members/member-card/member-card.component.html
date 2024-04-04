@@ -4,9 +4,12 @@
 	</div>
 
 	<div class="card-body">
-		<h5>{{member.knownAs}}</h5>
-		<h5>{{member.age}}</h5>
-		<p>{{member.city}}</p>
+		<div class="card-info">
+			<h5>{{member.knownAs}}</h5>
+			<h5>{{member.age}}</h5>
+			<p>{{member.city}}</p>
+		</div>
+		<div class="is-online-status" [ngClass]="{'online': (presenceService.onlineUsers$ | async)?.includes(member.username)}"></div>
 	</div>
 
 	<div class="btns-container">

@@ -1,16 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Member } from '../../../models/member';
 import { MembersService } from '../../../services/members.service';
 import { ActivatedRoute } from '@angular/router';
+import { PresenceService } from '../../../services/presence.service';
+import { MessageService } from '../../../services/message.service';
+import { AccountService } from '../../../services/account.service';
+import { User } from '../../../models/user';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-member-detail',
   templateUrl: './member-detail.component.html',
   styleUrl: './member-detail.component.scss',
 })
-export class MemberDetailComponent implements OnInit {
+export class MemberDetailComponent implements OnInit, OnDestroy {
   member: Member | undefined;
-  currentView: string = 'message';
+  user?: User;
+  currentView: string = 'more';
   detailsMap: { label: string; value: keyof Member }[] = [
     { label: 'Known As:', value: 'knownAs' },
     { label: 'Age:', value: 'age' },
@@ -29,11 +35,24 @@ export class MemberDetailComponent implements OnInit {
 
   constructor(
     private memberService: MembersService,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    public presenceService: PresenceService,
+    private messageService: MessageService,
+    private accountService: AccountService
+  ) {
+    this.accountService.currentUser$.pipe(take(1)).subscribe({
+      next: (user) => {
+        if (user) this.user = user;
+      },
+    });
+  }
 
   ngOnInit(): void {
     this.loadMember();
+  }
+
+  ngOnDestroy(): void {
+    this.messageService.stopHubConnection();
   }
 
   loadMember() {
@@ -45,5 +64,15 @@ export class MemberDetailComponent implements OnInit {
         this.member = member;
       },
     });
+  }
+
+  onTabClick(tab: string) {
+    this.currentView = tab;
+
+    if (this.currentView === 'messages' && this.user && this.member?.username) {
+      this.messageService.createHubConnection(this.user, this.member.username);
+    } else {
+      this.messageService.stopHubConnection();
+    }
   }
 }

@@ -12,14 +12,27 @@
 
   .img-wrapper {
     overflow: hidden;
-    
-
-
     img {
-      width: 15rem;
-      height: 13rem;
+      height: 15rem;
       object-fit: cover;
       transition: 325ms;
+    }
+  }
+
+  .card-body {
+    display: flex;
+    justify-content: space-between;
+    .is-online-status {
+      $circle-size: 1.25rem;
+      width: $circle-size;
+      height: $circle-size;
+      border-radius: 50%;
+      background-color: #e74c3c;
+      align-self: flex-end;
+    }
+
+    .online {
+      animation: online-background-blink 1.5s infinite;
     }
   }
 
@@ -38,17 +51,18 @@
   }
 
   &:hover {
-    .img-wrapper, .card-body{
+    .img-wrapper,
+    .card-body {
       filter: blur(0.15rem);
     }
 
-      .img-wrapper {
-        img {
-          transform: scale(1.1, 1.1);
-          opacity: 0.8;
-        }
+    .img-wrapper {
+      img {
+        transform: scale(1.1, 1.1);
+        opacity: 0.8;
       }
-    
+    }
+
     .btns-container {
       visibility: visible;
       z-index: 1000;
@@ -57,4 +71,14 @@
   }
 }
 
-
+@keyframes online-background-blink {
+  0% {
+    background-color: #2ecc71;
+  }
+  50% {
+    background-color: #27ae60;
+  }
+  100% {
+    background-color: #2ecc71;
+  }
+}

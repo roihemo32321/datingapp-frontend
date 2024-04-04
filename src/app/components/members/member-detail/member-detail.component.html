@@ -3,7 +3,13 @@
 		<div class="img-container">
 			<img src="{{member.photoUrl || './assets/images/user.png'}}" alt={{member.knownAs}} />
 		</div>
+
 		<div class="info-container">
+			<div class="online-user" *ngIf="(presenceService.onlineUsers$ | async)?.includes(member.username)">
+				<span>Online now:</span>
+				<div class="online-indicator"></div>
+			</div>
+
 			<div class="single-info" *ngFor="let singleInfo of detailsMap">
 				<h4>{{singleInfo.label}}</h4>
 				<p *ngIf="singleInfo.value === 'lastActive' || singleInfo.value === 'created'; else otherInfo">
@@ -16,8 +22,8 @@
 			</div>
 
 			<div class="actions-container">
-				<button (click)="currentView = 'more'" [disabled]="currentView === 'more'">More Info</button>
-				<button (click)="currentView = 'message'" [disabled]="currentView === 'message'">Message</button>
+				<button (click)="onTabClick('more')" [disabled]="currentView === 'more'">More Info</button>
+				<button (click)="onTabClick('messages')" [disabled]="currentView === 'messages'">Message</button>
 			</div>
 		</div>
 	</div>

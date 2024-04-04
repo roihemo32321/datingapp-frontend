@@ -9,32 +9,16 @@ import { MessageService } from '../../../services/message.service';
 })
 export class SendMessageComponent implements OnInit {
   @Input() username?: string;
-  messages: Message[] = [];
   newMessage: string = '';
 
-  constructor(private messageService: MessageService) {}
+  constructor(public messageService: MessageService) {}
 
-  ngOnInit(): void {
-    this.loadMessages();
-  }
-
-  loadMessages() {
-    if (!this.username) return;
-
-    this.messageService.getMessageThread(this.username).subscribe({
-      next: (messages) => {
-        this.messages = messages;
-      },
-    });
-  }
+  ngOnInit(): void {}
 
   sendMessage() {
     if (!this.username) return;
-    this.messageService.sendMessage(this.username, this.newMessage).subscribe({
-      next: (message) => {
-        this.newMessage = '';
-        this.messages.push(message);
-      },
+    this.messageService.sendMessage(this.username, this.newMessage).then(() => {
+      this.newMessage = '';
     });
   }
 }

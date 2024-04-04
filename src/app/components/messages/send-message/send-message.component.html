@@ -1,5 +1,5 @@
 <div class="messages-container">
-	<div class="single-message-container" *ngFor="let message of messages">
+	<div class="single-message-container" *ngFor="let message of (messageService.messageThread$ | async)">
 		<div class="img-container">
 			<img src="{{message.senderPhotoUrl || './assets/images/user.png'}}" alt="not loaded" />
 		</div>
@@ -17,7 +17,7 @@
 
 	</div>
 
-	<div class="no-messages" *ngIf="messages.length === 0">
+	<div class="no-messages" *ngIf="(messageService.messageThread$ | async)?.length === 0">
 		<h2>
 			No messages yet. Send the first one!
 		</h2>
