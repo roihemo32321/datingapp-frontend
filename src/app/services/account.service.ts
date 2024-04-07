@@ -15,7 +15,7 @@ export class AccountService {
   currentUser$ = this.currentUserSource.asObservable(); // Observable for the current user.
 
   private logoutSubject = new Subject<void>();
-  public logout$ = this.logoutSubject.asObservable();
+  public logout$ = this.logoutSubject.asObservable(); // Using it to reset the user params in the members service.
 
   constructor(
     private http: HttpClient,
