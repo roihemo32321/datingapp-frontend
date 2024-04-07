@@ -2,33 +2,39 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-
-  .single-message-container {
+  .all-messages-container {
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    .img-container {
-      width: 2.5rem;
-      height: 2.5rem;
-      img {
-        border-radius: 50%;
-        border: 1px solid grey;
-      }
-    }
-
-    .message-info {
-      .message-details {
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
-        font-size: 0.75rem;
-
-        .not-read {
-          color: red;
+    flex-direction: column;
+    gap: 1rem;
+    height: 30rem;
+    overflow-y: overlay;
+    .single-message-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      .img-container {
+        width: 2.5rem;
+        height: 2.5rem;
+        img {
+          border-radius: 50%;
+          border: 1px solid grey;
         }
+      }
 
-        .message-read {
-          color: #05a705;
+      .message-info {
+        .message-details {
+          display: flex;
+          align-items: center;
+          gap: 0.25rem;
+          font-size: 0.75rem;
+
+          .not-read {
+            color: red;
+          }
+
+          .message-read {
+            color: #05a705;
+          }
         }
       }
     }
